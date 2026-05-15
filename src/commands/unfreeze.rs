@@ -22,7 +22,7 @@ pub fn unfreeze_command() -> Command {
 struct UnfreezeCommandExecutor;
 
 impl CommandHandler for UnfreezeCommandExecutor {
-    fn handle(&self, sender: CommandSender, server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
+    fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
                 let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();

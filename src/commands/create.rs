@@ -1,4 +1,3 @@
-use std::cmp::PartialEq;
 use pumpkin_plugin_api::command::{Command, CommandError, CommandNode, CommandSender, ConsumedArgs};
 use pumpkin_plugin_api::command_wit::{Arg, ArgumentType, StringType};
 use pumpkin_plugin_api::commands::CommandHandler;

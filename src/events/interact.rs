@@ -4,13 +4,13 @@ use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::TextComponent;
 use tracing::info;
 use uuid::Uuid;
-use crate::services::auth::{AUTH_SERVICE, UNVERIFIED};
+use crate::services::auth::UNVERIFIED;
 use crate::services::freeze::FROZEN;
 
 pub struct InteractEvent;
 
 impl EventHandler<PlayerInteractEvent> for InteractEvent {
-    fn handle(&self, server: Server, mut event: <PlayerInteractEvent as FromIntoEvent>::Data) -> <PlayerInteractEvent as FromIntoEvent>::Data {
+    fn handle(&self, _server: Server, mut event: <PlayerInteractEvent as FromIntoEvent>::Data) -> <PlayerInteractEvent as FromIntoEvent>::Data {
         let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();

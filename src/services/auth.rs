@@ -3,7 +3,7 @@ use std::sync::{Mutex, OnceLock};
 use argon2::password_hash::{
     SaltString
 };
-use password_hash::{PasswordHasher, PasswordVerifier, Salt};
+use password_hash::{PasswordHasher, Salt};
 use totp_rs::{Algorithm, Secret, TOTP};
 use uuid::Uuid;
 use crate::models::password::Password;

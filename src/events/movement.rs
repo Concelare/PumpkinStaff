@@ -10,7 +10,7 @@ use crate::services::freeze::FROZEN;
 pub struct MovementEvent;
 
 impl EventHandler<PlayerMoveEvent> for MovementEvent {
-    fn handle(&self, server: Server, mut event: <PlayerMoveEvent as FromIntoEvent>::Data) -> <PlayerMoveEvent as FromIntoEvent>::Data {
+    fn handle(&self, _server: Server, mut event: <PlayerMoveEvent as FromIntoEvent>::Data) -> <PlayerMoveEvent as FromIntoEvent>::Data {
         let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();

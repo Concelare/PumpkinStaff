@@ -5,8 +5,7 @@ use pumpkin_plugin_api::commands::CommandHandler;
 use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::{NamedColor, TextComponent};
 use tracing::info;
-use uuid::{uuid, Uuid};
-use crate::services::freeze::FREEZE_SERVICE;
+use uuid::Uuid;
 use crate::services::vanish::VANISH_SERVICE;
 
 pub fn vanish_command() -> Command {
@@ -24,7 +23,7 @@ pub fn vanish_command() -> Command {
 struct VanishCommandExecutor;
 
 impl CommandHandler for VanishCommandExecutor {
-    fn handle(&self, sender: CommandSender, server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
+    fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
                 let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();

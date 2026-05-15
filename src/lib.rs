@@ -4,7 +4,6 @@ use std::path::PathBuf;
 use pumpkin_plugin_api::{Context, Plugin, PluginMetadata};
 use tracing::*;
 use crate::commands::register_commands;
-use crate::config::CONFIG;
 
 mod config;
 mod services;
@@ -37,7 +36,7 @@ impl Plugin for PumpkinStaffPlugin {
         let config_path = PathBuf::from(_context.get_data_folder() + "/pumpkinstaff.toml");
         let db_path = PathBuf::from(_context.get_data_folder()).join("pumpkinstaff.db");
 
-        if (!config_path.exists()) {
+        if !config_path.exists()  {
             info!("Config file not found. Creating...");
             let mut file = match File::create(config_path.clone()) {
                 Ok(file) => {

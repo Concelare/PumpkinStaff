@@ -10,7 +10,7 @@ use crate::services::freeze::FROZEN;
 pub struct PlaceBlockEvent;
 
 impl EventHandler<BlockPlaceEvent> for PlaceBlockEvent {
-    fn handle(&self, server: Server, mut event: <BlockPlaceEvent as FromIntoEvent>::Data) -> <BlockPlaceEvent as FromIntoEvent>::Data {
+    fn handle(&self, _server: Server, mut event: <BlockPlaceEvent as FromIntoEvent>::Data) -> <BlockPlaceEvent as FromIntoEvent>::Data {
         let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();
@@ -40,7 +40,7 @@ impl EventHandler<BlockPlaceEvent> for PlaceBlockEvent {
 pub struct BreakEvent;
 
 impl EventHandler<BlockBreakEvent> for BreakEvent {
-    fn handle(&self, server: Server, mut event: <BlockBreakEvent as FromIntoEvent>::Data) -> <BlockBreakEvent as FromIntoEvent>::Data {
+    fn handle(&self, _server: Server, mut event: <BlockBreakEvent as FromIntoEvent>::Data) -> <BlockBreakEvent as FromIntoEvent>::Data {
         let player = match event.player {
             Some(ref player) => player,
             None => return event
