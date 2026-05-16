@@ -2,7 +2,11 @@ use pumpkin_plugin_api::command::Command;
 use pumpkin_plugin_api::Context;
 use pumpkin_plugin_api::permission::{Permission, PermissionDefault, PermissionLevel};
 use tracing::{error, info};
+use crate::commands::create::create_command;
+use crate::commands::fly::fly_command;
 use crate::commands::freeze::freeze_command;
+use crate::commands::login::login_command;
+use crate::commands::remove::remove_command;
 use crate::commands::unfreeze::unfreeze_command;
 use crate::commands::vanish::vanish_command;
 use crate::PERMISSION_BASE;
@@ -13,19 +17,15 @@ pub mod freeze;
 pub mod unfreeze;
 pub mod vanish;
 pub mod remove;
+pub mod fly;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");
-    let names = ["staff".to_string()];
-    let cmd = Command::new(&names, "");
 
-    create::create_command(&cmd);
-    login::login_command(&cmd);
-    remove::remove_command(&cmd);
-    info!("Registering Staff Permission...");
+    info!("Registering Login Permission...");
     let permission = Permission {
-        node: PERMISSION_BASE.to_string() + "staff",
-        description: "Staff Commands Permission".to_string(),
+        node: PERMISSION_BASE.to_string() + "login",
+        description: "Login Command Permission".to_string(),
         default: PermissionDefault::Op(PermissionLevel::Four),
         children: vec![],
     };
@@ -34,9 +34,64 @@ pub fn register_commands(context: &Context) {
         Err(e) => error!("Failed to register permission: {}", e),
     }
 
-    info!("Registering Staff Command...");
-    context.register_command(cmd, &permission.node.as_str());
-    info!("Staff Commands registered successfully");
+    info!("Login Permission registered successfully.");
+
+    info!("Registering Login Command...");
+    context.register_command(login_command(), &permission.node.as_str());
+    info!("Login Command registered successfully");
+
+    info!("Registering Create Permission...");
+    let create_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "create",
+        description: "Create Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&create_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Create Permission registered successfully");
+
+    info!("Registering Create Permission...");
+    context.register_command(create_command(), &create_permission.node.as_str());
+    info!("Create Command registered successfully");
+
+    info!("Registering Remove Permission...");
+    let remove_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "remove",
+        description: "Remove Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&remove_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Remove Permission registered successfully");
+
+    info!("Registering Remove Command...");
+    context.register_command(remove_command(), &remove_permission.node.as_str());
+    info!("Remove Command registered successfully");
+
+    info!("Registering Fly Permission...");
+    let fly_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "fly",
+        description: "Fly Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&fly_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Fly Permission registered successfully");
+
+    info!("Registering Fly Command...");
+
+    context.register_command(fly_command(), &fly_permission.node.as_str());
+
+    info!("Fly Command registered successfully");
 
     info!("Registering Freeze Permission...");
 

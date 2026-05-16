@@ -10,11 +10,13 @@ use crate::config::{SecurityMode, CONFIG};
 use crate::services::auth::AUTH_SERVICE;
 use crate::services::database::DATABASE_SERVICE;
 
-pub fn create_command(cmd: &Command) {
-    let node = CommandNode::literal("create").execute(CreateCommandExecutor);
-    node.then(CommandNode::argument("password", &ArgumentType::String(StringType::SingleWord)).execute(CreateCommandExecutor));
+pub fn create_command() -> Command {
+    let names = ["create".to_string()];
+    let cmd = Command::new(&names, "Create a new account").execute(CreateCommandExecutor);
 
-    cmd.then(node);
+    cmd.then(CommandNode::argument("password", &ArgumentType::String(StringType::SingleWord)).execute(CreateCommandExecutor));
+
+    cmd
 }
 
 pub struct CreateCommandExecutor;

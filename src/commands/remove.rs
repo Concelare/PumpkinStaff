@@ -7,11 +7,12 @@ use pumpkin_plugin_api::Server;
 use std::str::FromStr;
 use uuid::Uuid;
 
-pub fn remove_command(cmd: &Command) {
-    let node = CommandNode::literal("remove").execute(RemoveCommandExecutor);
-    node.then(CommandNode::argument("player", &ArgumentType::Players).execute(RemoveCommandExecutor));
+pub fn remove_command() -> Command {
+    let names = ["remove".to_string()];
+    let cmd = Command::new(&names, "Remove staff password");
+    cmd.then(CommandNode::argument("player", &ArgumentType::Players).execute(RemoveCommandExecutor));
 
-    cmd.then(node);
+    cmd
 }
 
 struct RemoveCommandExecutor;

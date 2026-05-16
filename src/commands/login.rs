@@ -9,11 +9,13 @@ use crate::config::{SecurityMode, CONFIG};
 use crate::services::auth::AUTH_SERVICE;
 use crate::services::database::DATABASE_SERVICE;
 
-pub fn login_command(cmd: &Command) {
-    let node = CommandNode::literal("login").execute(LoginCommandExecutor);
-    node.then(CommandNode::argument("password", &ArgumentType::String(StringType::SingleWord)).execute(LoginCommandExecutor));
+pub fn login_command() -> Command {
+    let names = ["login".to_string()];
+    let cmd = Command::new(&names, "Login to the server").execute(LoginCommandExecutor);
+    
+    cmd.then(CommandNode::argument("password", &ArgumentType::String(StringType::SingleWord)).execute(LoginCommandExecutor));
 
-    cmd.then(node);
+    cmd
 }
 
 pub struct LoginCommandExecutor;
