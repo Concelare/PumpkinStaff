@@ -2,8 +2,10 @@ use std::str::FromStr;
 use pumpkin_plugin_api::events::{EventHandler, FromIntoEvent, PlayerCommandSendEvent};
 use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::TextComponent;
+use tracing::info;
 use uuid::Uuid;
 use crate::services::auth::{AUTH_SERVICE, UNVERIFIED};
+use crate::services::freeze::FROZEN;
 
 pub struct CommandEvent;
 
@@ -30,6 +32,19 @@ impl EventHandler<PlayerCommandSendEvent> for CommandEvent {
             event.player.send_system_message(TextComponent::text("You are not verified! You cannot use commands. Use /staff login!"), true);
             event.cancelled = true;
         }
+
+        let frozen = FROZEN.get();
+        if frozen.is_none() {
+            info!("No frozen players to check for on chat.");
+            return event;
+        }
+        let lock = frozen.unwrap().lock().unwrap();
+
+        if lock.contains(&uuid) {
+            event.player.send_system_message(TextComponent::text("You are frozen, please contact staff"), true);
+            event.cancelled = true
+        }
+
         event
     }
 }
