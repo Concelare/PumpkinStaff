@@ -6,6 +6,7 @@ use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::{NamedColor, TextComponent};
 use tracing::info;
 use uuid::Uuid;
+use crate::services::auth::{AUTH_SERVICE, VERIFIED};
 use crate::services::freeze::FREEZE_SERVICE;
 
 pub fn freeze_command() -> Command {
@@ -25,11 +26,15 @@ struct FreezeCommandExecutor;
 
 impl CommandHandler for FreezeCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
-
-
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
-                let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();
+                let uuid = match Uuid::from_str(player.get_id().as_str()) {
+                    Ok(uuid) => uuid,
+                    Err(_) => {
+                        sender.send_message(TextComponent::text("Invalid player UUID format."));
+                        return Ok(1);
+                    }
+                };
                 FREEZE_SERVICE.freeze(uuid);
                 let msg = TextComponent::text("You have been frozen! Contact Staff!");
                 msg.bold(true);

@@ -123,6 +123,42 @@ impl DatabaseService {
         self.get_password(user).is_some()
     }
 
+    pub fn delete(&self, user: Uuid) {
+        let user = user.to_string();
+
+        // Begin Transaction
+        let tx = match self.db.begin_write().map_err(|e| e.to_string()) {
+            Ok(tx) => tx,
+            Err(e) => {
+                error!("Failed to begin transaction: {}", e);
+                return;
+            }
+        };
+
+        {
+            // Open Passwords Table
+            let mut table = match tx.open_table(PASSWORDS_TABLE).map_err(|e| e.to_string()) {
+                Ok(table) => table,
+                Err(e) => {
+                    error!("Failed to open passwords table: {}", e);
+                    return;
+                }
+            };
+
+            // Remove Password Record
+            if let Err(e) = table.remove(user.as_str()).map_err(|e| e.to_string()) {
+                error!("Failed to delete password: {}", e);
+                return;
+            }
+        }
+
+        // Commit Transaction
+        match tx.commit().map_err(|e| e.to_string()) {
+            Ok(_) => (),
+            Err(e) => error!("Failed to commit transaction: {}", e),
+        }
+    }
+
 
 }
 

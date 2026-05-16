@@ -12,6 +12,7 @@ pub mod login;
 pub mod freeze;
 pub mod unfreeze;
 pub mod vanish;
+pub mod remove;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");

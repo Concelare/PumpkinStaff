@@ -8,6 +8,7 @@ pub mod interact;
 pub mod chat;
 pub mod movement;
 pub mod block;
+pub mod command;
 
 pub fn register_events(context: &pumpkin_plugin_api::Context) {
     info!("Registering events...");

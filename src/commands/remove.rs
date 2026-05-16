@@ -1,0 +1,36 @@
+use std::str::FromStr;
+use pumpkin_plugin_api::command::{Command, CommandError, CommandNode, CommandSender, ConsumedArgs};
+use pumpkin_plugin_api::command_wit::{Arg, ArgumentType, StringType};
+use pumpkin_plugin_api::commands::CommandHandler;
+use pumpkin_plugin_api::Server;
+use pumpkin_plugin_api::text::TextComponent;
+use uuid::Uuid;
+use crate::services::database::DATABASE_SERVICE;
+
+pub fn remove_command(cmd: &Command) {
+    let node = CommandNode::literal("remove").execute(RemoveCommandExecutor);
+    node.then(CommandNode::argument("Player", &ArgumentType::Players).execute(RemoveCommandExecutor));
+
+    cmd.then(node);
+}
+
+struct RemoveCommandExecutor;
+
+impl CommandHandler for RemoveCommandExecutor {
+    fn handle(&self, sender: CommandSender, server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
+        if let Arg::Players(players) = args.get_value("player") {
+            for player in players {
+                let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();
+
+                DATABASE_SERVICE.delete(uuid);
+
+                player.send_system_message(TextComponent::text("Your staff password has been removed."), true);
+
+            }
+        }
+
+        sender.send_message(TextComponent::text("Staff password removed for specified players."));
+
+        Ok(1)
+    }
+}

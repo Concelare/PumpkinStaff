@@ -30,6 +30,19 @@ impl AuthService {
         assert!(AUTH_SERVICE.0.set(auth).is_ok());
     }
 
+    pub fn is_verified(&self, uuid: Uuid) -> bool {
+        if let Some(verified) = VERIFIED.get() {
+            let verified = match verified.lock() {
+                Ok(verified) => verified,
+                Err(_) => return false,
+            };
+
+            verified.contains(&uuid)
+        } else {
+            false
+        }
+    }
+
     pub fn create_user_password(&self, user: Uuid, password: &str) -> bool {
         let salt = SaltString::generate(&mut OsRng);
 
@@ -140,6 +153,23 @@ impl AuthService {
         let mut guard = vec.lock().unwrap();
         guard.retain(|u| *u != uuid);
         info!("{} has left the server", uuid);
+    }
+    
+    pub fn delete(&self, uuid: Uuid) {
+        // Remove from verified
+        let vec = VERIFIED.get().expect("VERIFIED not initialized");
+        let mut guard = vec.lock().unwrap();
+        guard.retain(|u| *u != uuid);
+        drop(guard);
+
+        // Remove from unverified
+        let vec = UNVERIFIED.get().expect("UNVERIFIED not initialized");
+        let mut guard = vec.lock().unwrap();
+        guard.retain(|u| *u != uuid);
+        drop(guard);
+
+        // Delete password record from database
+        DATABASE_SERVICE.delete(uuid);
     }
 }
 
