@@ -7,6 +7,7 @@ use crate::commands::fly::fly_command;
 use crate::commands::freeze::freeze_command;
 use crate::commands::login::login_command;
 use crate::commands::remove::remove_command;
+use crate::commands::speed::speed_command;
 use crate::commands::unfreeze::unfreeze_command;
 use crate::commands::vanish::vanish_command;
 use crate::PERMISSION_BASE;
@@ -18,6 +19,7 @@ pub mod unfreeze;
 pub mod vanish;
 pub mod remove;
 pub mod fly;
+pub mod speed;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");
@@ -150,6 +152,23 @@ pub fn register_commands(context: &Context) {
     context.register_command(vanish_command(), &vanish_permission.node.as_str());
 
     info!("Vanish Command registered successfully");
+
+    info!("Registering Speed Permission...");
+    let speed_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "speed",
+        description: "Speed Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&speed_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Speed Permission registered successfully");
+
+    info!("Registering Speed Command...");
+    context.register_command(speed_command(), &speed_permission.node.as_str());
+    info!("Speed Command registered successfully");
 
     info!("Registration completed successfully");
 }
