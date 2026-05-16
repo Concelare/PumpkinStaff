@@ -4,6 +4,7 @@ use pumpkin_plugin_api::permission::{Permission, PermissionDefault, PermissionLe
 use tracing::{error, info};
 use crate::commands::freeze::freeze_command;
 use crate::commands::unfreeze::unfreeze_command;
+use crate::commands::vanish::vanish_command;
 use crate::PERMISSION_BASE;
 
 pub mod create;
@@ -23,7 +24,7 @@ pub fn register_commands(context: &Context) {
     let permission = Permission {
         node: PERMISSION_BASE.to_string() + "staff",
         description: "Staff Commands Permission".to_string(),
-        default: PermissionDefault::Op(PermissionLevel::One),
+        default: PermissionDefault::Op(PermissionLevel::Four),
         children: vec![],
     };
     match context.register_permission(&permission) {
@@ -40,7 +41,7 @@ pub fn register_commands(context: &Context) {
     let freeze_permission = Permission {
         node: PERMISSION_BASE.to_string() + "freeze",
         description: "Freeze Command Permission".to_string(),
-        default: PermissionDefault::Op(PermissionLevel::One),
+        default: PermissionDefault::Op(PermissionLevel::Four),
         children: vec![],
     };
     match context.register_permission(&freeze_permission) {
@@ -59,7 +60,7 @@ pub fn register_commands(context: &Context) {
     let unfreeze_permission = Permission {
         node: PERMISSION_BASE.to_string() + "unfreeze",
         description: "Unfreeze Command Permission".to_string(),
-        default: PermissionDefault::Op(PermissionLevel::One),
+        default: PermissionDefault::Op(PermissionLevel::Four),
         children: vec![],
     };
     match context.register_permission(&unfreeze_permission) {
@@ -74,6 +75,24 @@ pub fn register_commands(context: &Context) {
 
     info!("Unfreeze Command registered successfully");
 
+    info!("Registering Vanish Permission...");
+
+    let vanish_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "vanish",
+        description: "Vanish Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&vanish_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Vanish Permission registered successfully");
+
+    info!("Registering Vanish Command...");
+    context.register_command(vanish_command(), &vanish_permission.node.as_str());
+
+    info!("Vanish Command registered successfully");
 
     info!("Registration completed successfully");
 }

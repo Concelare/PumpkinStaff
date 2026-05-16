@@ -87,16 +87,20 @@ impl CommandHandler for VanishCommandExecutor {
         };
 
         if VANISH_SERVICE.is_vanished(uuid) {
-            VANISH_SERVICE.vanish(uuid);
-            player.as_entity().set_invisible(false);
-            sender.as_player().unwrap().send_system_message(TextComponent::text("You are vanished!"), true);
-        }
-        else {
             VANISH_SERVICE.unvanish(uuid);
             player.as_entity().set_invisible(false);
+            player.set_tab_list_listed(true);
             sender.as_player().unwrap().send_system_message(TextComponent::text("You are unvanished!"), true);
         }
+        else {
+            VANISH_SERVICE.vanish(uuid);
+            player.as_entity().set_invisible(true);
+            player.set_tab_list_listed(false);
+            sender.as_player().unwrap().send_system_message(TextComponent::text("You are vanished!"), true);
+        }
 
+
+        
         Ok(1)
     }
 }

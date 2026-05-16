@@ -35,6 +35,7 @@ impl EventHandler<PlayerJoinEvent> for OnJoinEvent {
         if VANISH_SERVICE.is_vanished(uuid) {
             event.player.send_system_message(TextComponent::text("Silently Joined, You are vanished"), true);
             event.player.as_entity().set_invisible(true);
+            event.player.set_tab_list_listed(false);
             event.cancelled = true;
         }
 
