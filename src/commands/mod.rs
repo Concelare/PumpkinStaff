@@ -21,6 +21,7 @@ pub fn register_commands(context: &Context) {
 
     create::create_command(&cmd);
     login::login_command(&cmd);
+    remove::remove_command(&cmd);
     info!("Registering Staff Permission...");
     let permission = Permission {
         node: PERMISSION_BASE.to_string() + "staff",
