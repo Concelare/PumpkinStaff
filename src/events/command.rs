@@ -4,7 +4,7 @@ use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::TextComponent;
 use tracing::info;
 use uuid::Uuid;
-use crate::services::auth::{AUTH_SERVICE, UNVERIFIED};
+use crate::services::auth::UNVERIFIED;
 use crate::services::freeze::FROZEN;
 
 pub struct CommandEvent;
