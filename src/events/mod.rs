@@ -74,4 +74,13 @@ pub fn register_events(context: &pumpkin_plugin_api::Context) {
         }
     };
     info!("Registered BlockPlaceEvent.");
+
+    info!("Registering CommandEvent...");
+    match context.register_event_handler(command::CommandEvent, EventPriority::Highest, true) {
+        Ok(_) => (),
+        Err(e) => {
+            error!("Failed to register CommandEvent: {}", e);
+        }
+    };
+    info!("Registered CommandEvent.");
 }
