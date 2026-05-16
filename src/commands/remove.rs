@@ -9,7 +9,7 @@ use uuid::Uuid;
 
 pub fn remove_command(cmd: &Command) {
     let node = CommandNode::literal("remove").execute(RemoveCommandExecutor);
-    node.then(CommandNode::argument("Player", &ArgumentType::Players).execute(RemoveCommandExecutor));
+    node.then(CommandNode::argument("player", &ArgumentType::Players).execute(RemoveCommandExecutor));
 
     cmd.then(node);
 }

@@ -12,7 +12,7 @@ pub fn unfreeze_command() -> Command {
     let names = ["unfreeze".to_string()];
     let cmd = Command::new(&names, "Unfreeze a frozen account").execute(UnfreezeCommandExecutor);
     cmd.then({
-        let node = CommandNode::argument("Player", &ArgumentType::Players);
+        let node = CommandNode::argument("player", &ArgumentType::Players);
         node.execute(UnfreezeCommandExecutor)
     });
 

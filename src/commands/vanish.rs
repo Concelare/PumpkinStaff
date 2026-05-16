@@ -13,7 +13,7 @@ pub fn vanish_command() -> Command {
     let cmd = Command::new(&names, "Vanish yourself from the server").execute(VanishCommandExecutor);
 
     cmd.then({
-        let node = CommandNode::argument("Player", &ArgumentType::Players);
+        let node = CommandNode::argument("player", &ArgumentType::Players);
         node.execute(VanishCommandExecutor)
     });
 
