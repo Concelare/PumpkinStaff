@@ -30,19 +30,6 @@ impl AuthService {
         assert!(AUTH_SERVICE.0.set(auth).is_ok());
     }
 
-    pub fn is_verified(&self, uuid: Uuid) -> bool {
-        if let Some(verified) = VERIFIED.get() {
-            let verified = match verified.lock() {
-                Ok(verified) => verified,
-                Err(_) => return false,
-            };
-
-            verified.contains(&uuid)
-        } else {
-            false
-        }
-    }
-
     pub fn create_user_password(&self, user: Uuid, password: &str) -> bool {
         let salt = SaltString::generate(&mut OsRng);
 

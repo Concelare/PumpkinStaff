@@ -10,7 +10,7 @@ use crate::services::freeze::FROZEN;
 pub struct CommandEvent;
 
 impl EventHandler<PlayerCommandSendEvent> for CommandEvent {
-    fn handle(&self, server: Server, mut event: <PlayerCommandSendEvent as FromIntoEvent>::Data) -> <PlayerCommandSendEvent as FromIntoEvent>::Data {
+    fn handle(&self, _server: Server, mut event: <PlayerCommandSendEvent as FromIntoEvent>::Data) -> <PlayerCommandSendEvent as FromIntoEvent>::Data {
         let player = &event.player;
 
         let unverified = match UNVERIFIED.get() {

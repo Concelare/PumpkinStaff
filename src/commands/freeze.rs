@@ -6,7 +6,6 @@ use pumpkin_plugin_api::Server;
 use pumpkin_plugin_api::text::{NamedColor, TextComponent};
 use tracing::info;
 use uuid::Uuid;
-use crate::services::auth::{AUTH_SERVICE, VERIFIED};
 use crate::services::freeze::FREEZE_SERVICE;
 
 pub fn freeze_command() -> Command {
