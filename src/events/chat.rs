@@ -16,7 +16,7 @@ impl EventHandler<PlayerChatEvent> for ChatEvent {
         let lock = unverified.lock().unwrap();
 
         if lock.contains(&uuid) {
-            event.player.send_system_message(TextComponent::text("You are unverified, please use /staff login"), true);
+            event.player.send_system_message(TextComponent::text("You are unverified, please use /login"), true);
             event.cancelled = true
         }
         

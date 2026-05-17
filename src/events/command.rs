@@ -28,8 +28,8 @@ impl EventHandler<PlayerCommandSendEvent> for CommandEvent {
             Err(_) => return event,
         };
 
-        if lock.contains(&uuid) && !event.command.contains("staff login") {
-            event.player.send_system_message(TextComponent::text("You are not verified! You cannot use commands. Use /staff login!"), true);
+        if lock.contains(&uuid) && !event.command.contains("login") {
+            event.player.send_system_message(TextComponent::text("You are not verified! You cannot use commands. Use /login!"), true);
             event.cancelled = true;
         }
 

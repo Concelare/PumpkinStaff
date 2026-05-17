@@ -18,7 +18,7 @@ impl EventHandler<PlayerJoinEvent> for OnJoinEvent {
 
         if DATABASE_SERVICE.exists(uuid) {
             AUTH_SERVICE.add_unverified(uuid);
-            event.player.send_system_message(TextComponent::text("You are not verified, please use /staff login"), true);
+            event.player.send_system_message(TextComponent::text("You are not verified, please use /login"), true);
         }
 
         let frozen = FROZEN.get();

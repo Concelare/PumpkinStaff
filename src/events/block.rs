@@ -16,7 +16,7 @@ impl EventHandler<BlockPlaceEvent> for PlaceBlockEvent {
         let lock = unverified.lock().unwrap();
 
         if lock.contains(&uuid) {
-            event.player.send_system_message(TextComponent::text("You are not verified, please use /staff login"), true);
+            event.player.send_system_message(TextComponent::text("You are not verified, please use /login"), true);
             event.cancelled = true
         }
 
