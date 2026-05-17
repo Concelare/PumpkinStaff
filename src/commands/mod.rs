@@ -2,22 +2,22 @@ use pumpkin_plugin_api::command::Command;
 use pumpkin_plugin_api::Context;
 use pumpkin_plugin_api::permission::{Permission, PermissionDefault, PermissionLevel};
 use tracing::{error, info};
-use crate::commands::create::create_command;
+use crate::commands::createpassword::create_command;
 use crate::commands::fly::fly_command;
 use crate::commands::freeze::freeze_command;
 use crate::commands::login::login_command;
-use crate::commands::remove::remove_command;
+use crate::commands::removepassword::remove_command;
 use crate::commands::speed::speed_command;
 use crate::commands::unfreeze::unfreeze_command;
 use crate::commands::vanish::vanish_command;
 use crate::PERMISSION_BASE;
 
-pub mod create;
+pub mod createpassword;
 pub mod login;
 pub mod freeze;
 pub mod unfreeze;
 pub mod vanish;
-pub mod remove;
+pub mod removepassword;
 pub mod fly;
 pub mod speed;
 

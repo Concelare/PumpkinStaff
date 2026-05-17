@@ -11,7 +11,7 @@ use crate::services::auth::AUTH_SERVICE;
 use crate::services::database::DATABASE_SERVICE;
 
 pub fn create_command() -> Command {
-    let names = ["create".to_string()];
+    let names = ["createpassword".to_string()];
     let cmd = Command::new(&names, "Create a new account").execute(CreateCommandExecutor);
 
     cmd.then(CommandNode::argument("password", &ArgumentType::String(StringType::SingleWord)).execute(CreateCommandExecutor));
@@ -83,6 +83,8 @@ impl CommandHandler for CreateCommandExecutor {
                 sender.send_message(error_msg);
                 return Ok(0);
             }
+
+            return Ok(1);
         }
 
         let error_msg = TextComponent::text("Missing argument: 'Password'");
