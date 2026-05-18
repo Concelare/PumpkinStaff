@@ -23,7 +23,7 @@ pub fn fly_command() -> Command {
 struct FlyCommandExecutor;
 
 impl CommandHandler for FlyCommandExecutor {
-    fn handle(&self, sender: CommandSender, server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
+    fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
                 if player.is_flying() {
