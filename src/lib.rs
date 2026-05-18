@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use pumpkin_plugin_api::{Context, Plugin, PluginMetadata};
 use tracing::*;
 use crate::commands::register_commands;
+use crate::config::{SecurityMode, CONFIG};
 
 mod config;
 mod services;
@@ -62,6 +63,10 @@ impl Plugin for PumpkinStaffPlugin {
         info!("Loading config file...");
         config::Config::init(&config_path);
         info!("Config file loaded.");
+
+        if CONFIG.mode == SecurityMode::TwoFactor {
+            panic!("Two-factor authentication is not supported yet.");
+        }
 
         info!("Loading Database Service...");
         match services::database::DatabaseService::init(db_path.to_str().unwrap()) {
