@@ -4,6 +4,7 @@ use tracing::{error, info};
 use crate::commands::createpassword::create_command;
 use crate::commands::fly::fly_command;
 use crate::commands::freeze::freeze_command;
+use crate::commands::god::god_command;
 use crate::commands::login::login_command;
 use crate::commands::removepassword::remove_command;
 use crate::commands::speed::speed_command;
@@ -19,6 +20,7 @@ pub mod vanish;
 pub mod removepassword;
 pub mod fly;
 pub mod speed;
+pub mod god;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");
@@ -168,6 +170,23 @@ pub fn register_commands(context: &Context) {
     info!("Registering Speed Command...");
     context.register_command(speed_command(), &speed_permission.node.as_str());
     info!("Speed Command registered successfully");
+
+    info!("Registering God Permission...");
+    let god_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "god",
+        description: "God Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&god_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("God Permission registered successfully");
+
+    info!("Registering God Command...");
+    context.register_command(god_command(), &god_permission.node.as_str());
+    info!("God Command registered successfully");
 
     info!("Registration completed successfully");
 }
