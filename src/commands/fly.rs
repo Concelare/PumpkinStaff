@@ -2,6 +2,7 @@ use pumpkin_plugin_api::command::{Command, CommandError, CommandNode, CommandSen
 use pumpkin_plugin_api::command_wit::{Arg, ArgumentType};
 use pumpkin_plugin_api::commands::CommandHandler;
 use pumpkin_plugin_api::gui::TextComponent;
+use pumpkin_plugin_api::player::PlayerAbilities;
 use pumpkin_plugin_api::Server;
 
 pub fn fly_command() -> Command {
@@ -27,11 +28,15 @@ impl CommandHandler for FlyCommandExecutor {
             for player in players {
                 if player.is_flying() {
                     player.set_flying(false);
+                    let abilities = toggle_flight(player.get_abilities());
+                    player.set_abilities(abilities);
                     player.send_system_message(TextComponent::text("Flying mode disabled"), true);
                     continue;
                 }
                 
                 player.set_flying(true);
+                let abilities = toggle_flight(player.get_abilities());
+                player.set_abilities(abilities);
                 player.send_system_message(TextComponent::text("Flying mode enabled"), true);
             }
 
@@ -57,14 +62,23 @@ impl CommandHandler for FlyCommandExecutor {
         
         if player.is_flying() {
             player.set_flying(false);
+            let abilities = toggle_flight(player.get_abilities());
+            player.set_abilities(abilities);
             player.send_system_message(TextComponent::text("Flying mode disabled"), true);
             return Ok(1);
         }
         
         player.set_flying(true);
+        let abilities = toggle_flight(player.get_abilities());
+        player.set_abilities(abilities);
         player.send_system_message(TextComponent::text("Flying mode enabled"), true);
         
         Ok(1)
     }
     
+}
+
+fn toggle_flight(mut player_abilities: PlayerAbilities) -> PlayerAbilities {
+    player_abilities.allow_flying = !player_abilities.allow_flying;
+    player_abilities
 }

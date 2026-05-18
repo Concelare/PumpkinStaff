@@ -1,4 +1,3 @@
-use pumpkin_plugin_api::command::Command;
 use pumpkin_plugin_api::Context;
 use pumpkin_plugin_api::permission::{Permission, PermissionDefault, PermissionLevel};
 use tracing::{error, info};
