@@ -1,4 +1,3 @@
-use std::str::FromStr;
 use pumpkin_plugin_api::command::{Command, CommandError, CommandNode, CommandSender, ConsumedArgs};
 use pumpkin_plugin_api::command_wit::{Arg, ArgumentType, StringType};
 use pumpkin_plugin_api::commands::CommandHandler;
@@ -23,7 +22,7 @@ pub fn staffchat_command() -> Command {
 struct StaffChatExecutor;
 
 impl CommandHandler for StaffChatExecutor {
-    fn handle(&self, sender: CommandSender, server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
+    fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Simple(msg) = args.get_value("message") {
             if msg.is_empty() {
                 sender.send_message(TextComponent::text("Cannot send empty message"));

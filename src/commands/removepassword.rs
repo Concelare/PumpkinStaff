@@ -4,7 +4,6 @@ use pumpkin_plugin_api::command_wit::{Arg, ArgumentType};
 use pumpkin_plugin_api::commands::CommandHandler;
 use pumpkin_plugin_api::text::TextComponent;
 use pumpkin_plugin_api::Server;
-use std::str::FromStr;
 use uuid::Uuid;
 
 pub fn remove_command() -> Command {

@@ -8,7 +8,7 @@ use totp_rs::{Algorithm, Secret, TOTP};
 use uuid::Uuid;
 use crate::models::password::Password;
 use password_hash::rand_core::OsRng;
-use tracing::{error, info};
+use tracing::error;
 use crate::services::database::DATABASE_SERVICE;
 use crate::services::staffchat::STAFFCHAT_SERVICE;
 

@@ -2,7 +2,6 @@ use pumpkin_plugin_api::command::{Command, CommandError, CommandNode, CommandSen
 use pumpkin_plugin_api::command_wit::{Arg, ArgumentType, StringType};
 use pumpkin_plugin_api::commands::CommandHandler;
 use pumpkin_plugin_api::Server;
-use std::str::FromStr;
 use pumpkin_plugin_api::text::{NamedColor, TextComponent};
 use tracing::error;
 use uuid::Uuid;
