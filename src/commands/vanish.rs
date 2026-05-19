@@ -33,10 +33,10 @@ impl CommandHandler for VanishCommandExecutor {
                     msg.bold(true);
                     msg.underlined(true);
                     msg.color_named(NamedColor::Green);
-                    player.send_system_message(msg, true);
+                    player.send_system_message(msg, false);
 
                     if sender.is_player() {
-                        sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been unvanished!"), true);
+                        sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been unvanished!"), false);
                     }
                     else {
                         info!("Player has been unvanished by console command.")
@@ -51,10 +51,10 @@ impl CommandHandler for VanishCommandExecutor {
                 msg.bold(true);
                 msg.underlined(true);
                 msg.color_named(NamedColor::Green);
-                player.send_system_message(msg, true);
+                player.send_system_message(msg, false);
 
                 if sender.is_player() {
-                    sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been vanished!"), true);
+                    sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been vanished!"), false);
                 }
                 else {
                     info!("Player has been vanished by console command.")
@@ -83,13 +83,13 @@ impl CommandHandler for VanishCommandExecutor {
             VANISH_SERVICE.unvanish(uuid);
             player.as_entity().set_invisible(false);
             player.set_tab_list_listed(true);
-            sender.as_player().unwrap().send_system_message(TextComponent::text("You are unvanished!"), true);
+            sender.as_player().unwrap().send_system_message(TextComponent::text("You are unvanished!"), false);
         }
         else {
             VANISH_SERVICE.vanish(uuid);
             player.as_entity().set_invisible(true);
             player.set_tab_list_listed(false);
-            sender.as_player().unwrap().send_system_message(TextComponent::text("You are vanished!"), true);
+            sender.as_player().unwrap().send_system_message(TextComponent::text("You are vanished!"), false);
         }
 
 

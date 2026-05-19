@@ -6,6 +6,7 @@ use crate::commands::fly::fly_command;
 use crate::commands::freeze::freeze_command;
 use crate::commands::god::god_command;
 use crate::commands::login::login_command;
+use crate::commands::nickname::nickname_command;
 use crate::commands::removepassword::remove_command;
 use crate::commands::speed::speed_command;
 use crate::commands::staffchat::staffchat_command;
@@ -23,6 +24,7 @@ pub mod fly;
 pub mod speed;
 pub mod god;
 pub mod staffchat;
+pub mod nickname;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");
@@ -206,6 +208,23 @@ pub fn register_commands(context: &Context) {
     info!("Registering StaffChat Command...");
     context.register_command(staffchat_command(), &staffchat_permission.node.as_str());
     info!("StaffChat Command registered successfully");
+
+    info!("Registering Nickname Permission...");
+    let nickname_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "nickname",
+        description: "Nickname Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&nickname_permission) {
+        Ok(_) => info!("Nickname Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("Nickname Permission registered successfully");
+
+    info!("Registering Nickname Command...");
+    context.register_command(nickname_command(), &nickname_permission.node.as_str());
+    info!("Nickname Command registered successfully");
 
     info!("Registration completed successfully");
 }

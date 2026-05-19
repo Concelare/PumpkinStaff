@@ -30,11 +30,11 @@ impl CommandHandler for UnfreezeCommandExecutor {
                 msg.bold(true);
                 msg.underlined(true);
                 msg.color_named(NamedColor::Green);
-                player.send_system_message(msg, true);
+                player.send_system_message(msg, false);
             }
 
             if sender.is_player() {
-                sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been unfrozen!"), true);
+                sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been unfrozen!"), false);
             }
             else {
                 info!("Player has been unfrozen by console command.")
@@ -47,7 +47,7 @@ impl CommandHandler for UnfreezeCommandExecutor {
             let missing_msg = TextComponent::text("Missing Argument: 'Player'");
             missing_msg.color_named(NamedColor::DarkRed);
             missing_msg.bold(true);
-            sender.as_player().unwrap().send_system_message(missing_msg, true);
+            sender.as_player().unwrap().send_system_message(missing_msg, false);
         }
         else {
             info!("Missing argument 'Player' provided by console command.")

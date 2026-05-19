@@ -24,7 +24,7 @@ impl CommandHandler for RemoveCommandExecutor {
 
                 AUTH_SERVICE.delete(uuid);
 
-                player.send_system_message(TextComponent::text("Your staff password has been removed."), true);
+                player.send_system_message(TextComponent::text("Your staff password has been removed."), false);
 
             }
         }

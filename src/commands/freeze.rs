@@ -32,11 +32,11 @@ impl CommandHandler for FreezeCommandExecutor {
                 msg.bold(true);
                 msg.underlined(true);
                 msg.color_named(NamedColor::Red);
-                player.send_system_message(msg, true);
+                player.send_system_message(msg, false);
             }
 
             if sender.is_player() {
-                sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been frozen!"), true);
+                sender.as_player().unwrap().send_system_message(TextComponent::text("Player has been frozen!"), false);
             }
             else {
                 info!("Player has been frozen by console command.")
@@ -48,7 +48,7 @@ impl CommandHandler for FreezeCommandExecutor {
         let missing_msg = TextComponent::text("Missing Argument: 'Player'");
         missing_msg.color_named(NamedColor::DarkRed);
         missing_msg.bold(true);
-        sender.as_player().unwrap().send_system_message(missing_msg, true);
+        sender.as_player().unwrap().send_system_message(missing_msg, false);
 
         Ok(1)
     }

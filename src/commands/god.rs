@@ -28,19 +28,19 @@ impl CommandHandler for GodCommandExecutor {
                     player.set_flying(false);
                     let abilities = toggle_god(player.get_abilities());
                     player.set_abilities(abilities);
-                    player.send_system_message(TextComponent::text("God mode disabled"), true);
+                    player.send_system_message(TextComponent::text("God mode disabled"), false);
                     continue;
                 }
 
                 player.set_flying(true);
                 let abilities = toggle_god(player.get_abilities());
                 player.set_abilities(abilities);
-                player.send_system_message(TextComponent::text("God mode enabled"), true);
+                player.send_system_message(TextComponent::text("God mode enabled"), false);
             }
 
             return match sender.as_player() {
                 Some(player) => {
-                    player.send_system_message(TextComponent::text("God mode toggled for all players"), true);
+                    player.send_system_message(TextComponent::text("God mode toggled for all players"), false);
                     Ok(1)
                 },
                 None => {
@@ -62,14 +62,14 @@ impl CommandHandler for GodCommandExecutor {
             player.set_flying(false);
             let abilities = toggle_god(player.get_abilities());
             player.set_abilities(abilities);
-            player.send_system_message(TextComponent::text("God mode disabled"), true);
+            player.send_system_message(TextComponent::text("God mode disabled"), false);
             return Ok(1);
         }
 
         player.set_flying(true);
         let abilities =  toggle_god(player.get_abilities());
         player.set_abilities(abilities);
-        player.send_system_message(TextComponent::text("God mode enabled"), true);
+        player.send_system_message(TextComponent::text("God mode enabled"), false);
 
         Ok(1)
     }

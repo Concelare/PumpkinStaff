@@ -46,11 +46,11 @@ impl CommandHandler for SpeedCommandExecutor {
                 abilities.fly_speed = speed;
                 player.set_abilities(abilities);
 
-                player.send_system_message(TextComponent::text(format!("Your speed has been set to {}", speed).as_str()), true);
+                player.send_system_message(TextComponent::text(format!("Your speed has been set to {}", speed).as_str()), false);
             }
 
             if let Some(player) = sender.as_player() {
-                player.send_system_message(TextComponent::text("Speed set successfully."), true);
+                player.send_system_message(TextComponent::text("Speed set successfully."), false);
             }
             else {
                 sender.send_message(TextComponent::text("Speed set successfully."));
@@ -69,7 +69,7 @@ impl CommandHandler for SpeedCommandExecutor {
         abilities.fly_speed = speed;
         player.set_abilities(abilities);
 
-        player.send_system_message(TextComponent::text(format!("Speed set to {}", speed).as_str()), true);
+        player.send_system_message(TextComponent::text(format!("Speed set to {}", speed).as_str()), false);
         Ok(1)
     }
 }
