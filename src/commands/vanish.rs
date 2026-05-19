@@ -26,7 +26,7 @@ impl CommandHandler for VanishCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
-                let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();
+                let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
                 if VANISH_SERVICE.is_vanished(uuid) {
                     VANISH_SERVICE.unvanish(uuid);
                     player.as_entity().set_invisible(false);
@@ -78,13 +78,7 @@ impl CommandHandler for VanishCommandExecutor {
             }
         };
 
-        let uuid= match Uuid::from_str(player.get_id().as_str()) {
-            Ok(uuid) => uuid,
-            Err(_) => {
-                sender.send_message(TextComponent::text("Invalid player UUID"));
-                return Ok(1);
-            }
-        };
+        let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
 
         if VANISH_SERVICE.is_vanished(uuid) {
             VANISH_SERVICE.unvanish(uuid);

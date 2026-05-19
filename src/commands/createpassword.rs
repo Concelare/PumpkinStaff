@@ -24,16 +24,18 @@ pub struct CreateCommandExecutor;
 impl CommandHandler for CreateCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
 
-        let uuid = match Uuid::from_str(sender.as_player().unwrap().get_id().as_str()) {
-            Ok(uuid) => uuid,
-            Err(_) => return {
-                let error_msg = TextComponent::text("Failed to parse player UUID");
+        let player = match sender.as_player() {
+            Some(player) => player,
+            None => {
+                let error_msg = TextComponent::text("Command can only be used by players");
                 error_msg.color_named(NamedColor::DarkRed);
                 error_msg.bold(true);
                 sender.send_message(error_msg);
-                Ok(0)
-            },
+                return Ok(0);
+            }
         };
+
+        let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
 
         if let Arg::Simple(password) = args.get_value("password") {
             if CONFIG.mode == SecurityMode::Password {

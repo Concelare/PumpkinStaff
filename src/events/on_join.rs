@@ -14,7 +14,7 @@ pub struct OnJoinEvent;
 impl EventHandler<PlayerJoinEvent> for OnJoinEvent {
     fn handle(&self, _server: Server, mut event: <PlayerJoinEvent as FromIntoEvent>::Data) -> <PlayerJoinEvent as FromIntoEvent>::Data {
 
-        let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
+        let uuid = Uuid::from_u64_pair(event.player.get_id().high, event.player.get_id().low);
 
         if DATABASE_SERVICE.exists(uuid) {
             AUTH_SERVICE.add_unverified(uuid);

@@ -23,10 +23,7 @@ impl EventHandler<PlayerCommandSendEvent> for CommandEvent {
             Err(_) => return event,
         };
 
-        let uuid = match Uuid::from_str(player.get_id().as_str()) {
-            Ok(uuid) => uuid,
-            Err(_) => return event,
-        };
+        let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
 
         if lock.contains(&uuid) && !event.command.contains("login") {
             event.player.send_system_message(TextComponent::text("You are not verified! You cannot use commands. Use /login!"), true);

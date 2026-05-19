@@ -11,7 +11,7 @@ pub struct PlaceBlockEvent;
 
 impl EventHandler<BlockPlaceEvent> for PlaceBlockEvent {
     fn handle(&self, _server: Server, mut event: <BlockPlaceEvent as FromIntoEvent>::Data) -> <BlockPlaceEvent as FromIntoEvent>::Data {
-        let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
+        let uuid = Uuid::from_u64_pair(event.player.get_id().high, event.player.get_id().low);
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();
 
@@ -46,7 +46,7 @@ impl EventHandler<BlockBreakEvent> for BreakEvent {
             None => return event
         };
 
-        let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();
+        let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();
 

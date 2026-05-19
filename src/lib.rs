@@ -51,13 +51,11 @@ impl Plugin for PumpkinStaffPlugin {
             };
 
             let config = config::Config {
-                mode: config::SecurityMode::None,
+                mode: SecurityMode::None,
                 redb_path: "redb.db".to_string(),
             };
 
             file.write_all(toml::to_string(&config).unwrap().as_bytes()).unwrap();
-
-
         }
 
         info!("Loading config file...");
@@ -85,6 +83,10 @@ impl Plugin for PumpkinStaffPlugin {
         info!("Loading Vanish Service...");
         services::vanish::VanishService::init();
         info!("Vanish Service loaded.");
+
+        info!("Loading StaffChat Service...");
+        services::staffchat::StaffChatService::init(_context.get_server());
+        info!("StaffChat Service loaded.");
 
         register_commands(&_context);
         

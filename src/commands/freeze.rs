@@ -27,13 +27,7 @@ impl CommandHandler for FreezeCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
-                let uuid = match Uuid::from_str(player.get_id().as_str()) {
-                    Ok(uuid) => uuid,
-                    Err(_) => {
-                        sender.send_message(TextComponent::text("Invalid player UUID format."));
-                        return Ok(1);
-                    }
-                };
+                let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
                 FREEZE_SERVICE.freeze(uuid);
                 let msg = TextComponent::text("You have been frozen! Contact Staff!");
                 msg.bold(true);

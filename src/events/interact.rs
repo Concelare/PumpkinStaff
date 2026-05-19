@@ -11,7 +11,7 @@ pub struct InteractEvent;
 
 impl EventHandler<PlayerInteractEvent> for InteractEvent {
     fn handle(&self, _server: Server, mut event: <PlayerInteractEvent as FromIntoEvent>::Data) -> <PlayerInteractEvent as FromIntoEvent>::Data {
-        let uuid = Uuid::from_str(event.player.get_id().as_str()).unwrap();
+        let uuid = Uuid::from_u64_pair(event.player.get_id().high, event.player.get_id().low);
         let unverified = UNVERIFIED.get().unwrap();
         let lock = unverified.lock().unwrap();
 

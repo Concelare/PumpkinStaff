@@ -23,10 +23,10 @@ pub struct LoginCommandExecutor;
 impl CommandHandler for LoginCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
 
-        let uuid = match Uuid::from_str(sender.as_player().unwrap().get_id().as_str()) {
-            Ok(uuid) => uuid,
-            Err(_) => return {
-                let error_msg = TextComponent::text("Failed to parse player UUID");
+        let player = match sender.as_player() {
+            Some(player) => player,
+            None => return {
+                let error_msg = TextComponent::text("Command can only be used by players");
                 error_msg.color_named(NamedColor::DarkRed);
                 error_msg.bold(true);
                 sender.send_message(error_msg);
@@ -34,8 +34,10 @@ impl CommandHandler for LoginCommandExecutor {
             },
         };
 
+        let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
+
         if let Arg::Simple(password) = args.get_value("password") {
-            if CONFIG.mode == SecurityMode::Password {
+            return if CONFIG.mode == SecurityMode::Password {
                 if !DATABASE_SERVICE.exists(uuid) {
                     let error_msg = TextComponent::text("You don't have a password");
                     error_msg.color_named(NamedColor::DarkRed);
@@ -57,10 +59,9 @@ impl CommandHandler for LoginCommandExecutor {
                 success_msg.bold(true);
                 sender.send_message(success_msg);
                 AUTH_SERVICE.verify(uuid);
-                return Ok(1);
-            }
-            else if CONFIG.mode == SecurityMode::TwoFactor {
-                return match AUTH_SERVICE.verify_totp(uuid, password.as_str()) {
+                Ok(1)
+            } else if CONFIG.mode == SecurityMode::TwoFactor {
+                match AUTH_SERVICE.verify_totp(uuid, password.as_str()) {
                     true => {
                         let success_msg = TextComponent::text("TOTP verified successfully");
                         success_msg.color_named(NamedColor::Green);
@@ -77,9 +78,8 @@ impl CommandHandler for LoginCommandExecutor {
                         Ok(1)
                     }
                 }
-            }
-            else {
-                return Ok(0);
+            } else {
+                Ok(0)
             }
         }
 

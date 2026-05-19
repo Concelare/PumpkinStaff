@@ -10,6 +10,7 @@ use crate::models::password::Password;
 use password_hash::rand_core::OsRng;
 use tracing::{error, info};
 use crate::services::database::DATABASE_SERVICE;
+use crate::services::staffchat::STAFFCHAT_SERVICE;
 
 pub static AUTH_SERVICE: Ref = Ref(OnceLock::new());
 
@@ -128,7 +129,9 @@ impl AuthService {
         // Add to verified
         let vec = VERIFIED.get().expect("VERIFIED not initialized");
         let mut guard = vec.lock().unwrap();
-        guard.push(uuid)
+        guard.push(uuid);
+
+        STAFFCHAT_SERVICE.add_staff_member(uuid);
     }
 
     pub fn on_leave(&self, uuid: Uuid) {
@@ -139,7 +142,8 @@ impl AuthService {
         let vec = UNVERIFIED.get().expect("UNVERIFIED not initialized");
         let mut guard = vec.lock().unwrap();
         guard.retain(|u| *u != uuid);
-        info!("{} has left the server", uuid);
+
+        STAFFCHAT_SERVICE.remove_staff_member(&uuid);
     }
     
     pub fn delete(&self, uuid: Uuid) {

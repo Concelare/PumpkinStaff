@@ -21,7 +21,7 @@ impl CommandHandler for RemoveCommandExecutor {
     fn handle(&self, sender: CommandSender, _server: Server, args: ConsumedArgs) -> pumpkin_plugin_api::Result<i32, CommandError> {
         if let Arg::Players(players) = args.get_value("player") {
             for player in players {
-                let uuid = Uuid::from_str(player.get_id().as_str()).unwrap();
+                let uuid = Uuid::from_u64_pair(player.get_id().high, player.get_id().low);
 
                 AUTH_SERVICE.delete(uuid);
 

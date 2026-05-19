@@ -8,6 +8,7 @@ use crate::commands::god::god_command;
 use crate::commands::login::login_command;
 use crate::commands::removepassword::remove_command;
 use crate::commands::speed::speed_command;
+use crate::commands::staffchat::staffchat_command;
 use crate::commands::unfreeze::unfreeze_command;
 use crate::commands::vanish::vanish_command;
 use crate::PERMISSION_BASE;
@@ -21,6 +22,7 @@ pub mod removepassword;
 pub mod fly;
 pub mod speed;
 pub mod god;
+pub mod staffchat;
 
 pub fn register_commands(context: &Context) {
     info!("Registering commands...");
@@ -187,6 +189,23 @@ pub fn register_commands(context: &Context) {
     info!("Registering God Command...");
     context.register_command(god_command(), &god_permission.node.as_str());
     info!("God Command registered successfully");
+
+    info!("Registering StaffChat Permission");
+    let staffchat_permission = Permission {
+        node: PERMISSION_BASE.to_string() + "staffchat",
+        description: "StaffChat Command Permission".to_string(),
+        default: PermissionDefault::Op(PermissionLevel::Four),
+        children: vec![],
+    };
+    match context.register_permission(&staffchat_permission) {
+        Ok(_) => info!("Permission registered successfully"),
+        Err(e) => error!("Failed to register permission: {}", e),
+    }
+    info!("StaffChat Permission registered successfully");
+    
+    info!("Registering StaffChat Command...");
+    context.register_command(staffchat_command(), &staffchat_permission.node.as_str());
+    info!("StaffChat Command registered successfully");
 
     info!("Registration completed successfully");
 }
